@@ -1,0 +1,43 @@
+# 解决pycharm问题：module 'pip' has no attribute 'main'
+# 问题：Pycharm安装package出现如下报错：
+# AttributeError: module 'pip' has no attribute 'main'
+# 解决办法：
+# 找到安装目录下 helpers/packaging_tool.py文件，找到如下代码：
+
+def do_install(pkgs):
+     try:
+         import pip
+     except ImportError:
+         error_no_pip()
+     return pip.main(['install'] + pkgs)
+
+def do_uninstall(pkgs):
+     try:
+         import pip
+     except ImportError:
+        error_no_pip()
+     return pip.main(['uninstall', '-y'] + pkgs)
+
+# 修改为如下，然后保存：
+
+def do_install(pkgs):
+     try:
+         # import pip
+         try:
+            from pip._internal import main
+         except Exception:
+            from pip import main
+     except ImportError:
+         error_no_pip()
+     return main(['install'] + pkgs)
+
+def do_uninstall(pkgs):
+     try:
+         # import pip
+         try:
+            from pip._internal import main
+         except Exception:
+            from pip import main
+     except ImportError:
+        error_no_pip()
+     return main(['uninstall', '-y'] + pkgs)
