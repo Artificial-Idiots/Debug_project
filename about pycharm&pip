@@ -41,3 +41,5 @@ def do_uninstall(pkgs):
      except ImportError:
         error_no_pip()
      return main(['uninstall', '-y'] + pkgs)
+
+# 解决办法来源：https://www.cnblogs.com/Fordestiny/p/8901100.html
